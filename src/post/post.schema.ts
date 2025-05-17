@@ -14,8 +14,8 @@ export class Post {
   @Prop({ required: true })
   author_username: string;
 
-  @Prop({ required: true, type: 'string' })
-  author_avatar: string | null;
+  @Prop({ required: false })
+  author_avatar: string;
 
   @Prop({ required: true })
   content: string;
@@ -29,7 +29,7 @@ export class Post {
   @Prop({ required: true, default: 0 })
   like_count: number;
 
-  @Prop()
+  @Prop({ default: 0 })
   child_count: number;
 
   @Prop()

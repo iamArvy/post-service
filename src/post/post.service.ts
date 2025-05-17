@@ -15,7 +15,7 @@ export class PostService {
   }
 
   post(filters: FilterQuery<Post>) {
-    return this.model.findById(filters);
+    return this.model.findOne(filters);
   }
 
   posts(filters: FilterQuery<Post>) {
