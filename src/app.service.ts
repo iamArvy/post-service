@@ -9,6 +9,7 @@ import { UserService } from './user/user.service';
 import { LikeService } from './like/like.service';
 import { CommentService } from './comment/comment.service';
 import { ViewService } from './view/view.service';
+
 @Injectable()
 export class AppService {
   constructor(
@@ -108,7 +109,7 @@ export class AppService {
       where: { parent_post: pid },
     });
 
-    const posts = [];
+    const posts: string[] = [];
     comments.forEach((comment) => {
       posts.push(comment.child_post);
     });

@@ -14,7 +14,7 @@ export class Post {
   @Prop({ required: true })
   author_username: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: 'string' })
   author_avatar: string | null;
 
   @Prop({ required: true })

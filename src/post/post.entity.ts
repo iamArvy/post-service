@@ -5,6 +5,12 @@ export class Post implements Posts {
   @Field(() => String, { description: 'Author ID' })
   author_id: string;
 
+  @Field(() => String, { description: 'Author ID' })
+  author_username: string;
+
+  @Field(() => String, { description: 'Author ID' })
+  author_avatar: string;
+
   @Field(() => String, { description: 'Content of the Post' })
   content: string;
 
@@ -19,4 +25,7 @@ export class Post implements Posts {
 
   @Field(() => Int, { description: 'Number of Child content' })
   child_count: number;
+
+  @Field(() => Int, { description: 'Number of Child content' })
+  views_count: number;
 }
