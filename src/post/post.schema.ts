@@ -12,6 +12,12 @@ export class Post {
   author_id: string;
 
   @Prop({ required: true })
+  author_username: string;
+
+  @Prop({ required: true })
+  author_avatar: string | null;
+
+  @Prop({ required: true })
   content: string;
 
   @Prop({ required: true })
@@ -25,6 +31,9 @@ export class Post {
 
   @Prop()
   child_count: number;
+
+  @Prop()
+  views_count: number;
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
