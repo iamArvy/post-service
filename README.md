@@ -1,6 +1,6 @@
 # Post Service
 
-Post Service is a microservice built with NestJS, Docker, Prisma, PostgreSQL, and MongoDB. It offers RESTful APIs to manage posts, comments, likes, and user posts in an event-driven architecture.
+The **Post Service** is a microservice for managing posts and post interactions in a social media application, built with **NestJS**, supporting both **REST API** and **GRAPHQL** interfaces. It allows users manage posts, comments, likes, and user posts in an event-driven architecture and uses **Swagger** and **Apollo Playground** for API documentation and testing..
 
 ## Features
 
@@ -12,13 +12,12 @@ Post Service is a microservice built with NestJS, Docker, Prisma, PostgreSQL, an
 
 ## Tech Stack
 
-- Node.js 20+
-- NestJS
-- Docker
-- Prisma ORM
-- PostgreSQL (primary database)
-- MongoDB (used for certain collections)
-- REST API
+* **Framework**: [NestJS](https://nestjs.com/)
+* **Authentication**: [Passport.js](https://www.passportjs.org/) & [JWT (JSON Web Tokens)](https://jwt.io/)
+* **API**: REST, GraphQL (Apollo)
+* **ORM**: [Prisma](https://www.prisma.io/) & [Mongoose](https://www.mongoose.org/)
+* **Databases**: [PostgreSQL](https://www.postgresql.org/) for relational data, [MongoDB](https://www.mongodb.org/) (for document-based data)
+* **API Docs**: [Swagger](https://swagger.org) for REST, [Apollo Playground](https://apollo.org) for GraphQL
 
 ## Getting Started
 
@@ -26,8 +25,8 @@ Post Service is a microservice built with NestJS, Docker, Prisma, PostgreSQL, an
 
 - Node.js 20+
 - pnpm (preferred), npm or yarn
-- Docker and Docker Compose
-- PostgreSQL and MongoDB instances running
+- Docker and Docker Compose (if using docker)
+- PostgreSQL and MongoDB instances running (if running locally)
 
 ### Installation
 
@@ -46,24 +45,53 @@ POSTGRES_DB_URL="your_postgresql_connection_string"
 JWT_SECRET="your_jwt_secret_for_authentication_ensure_it's_the_same_from_auth_service"
 PORT=3000
 ```
-### Running with Docker
-
-Make sure your `.env` is configured with database connection strings.
+### Running the service
 
 ```bash
+# Start the dev server
+pnpm run start:dev
+
+# Or with Docker
 docker-compose up --build
 ```
 
-### Running Locally
+---
 
-```bash
-pnpm run start:dev
+## 📚 API Documentation
+
+* **Swagger UI** (REST): [http://localhost:3000/api](http://localhost:3000/api)
+* **Apollo Playground** (GraphQL): [http://localhost:3000/graphql](http://localhost:3000/graphql)
+
+---
+
+## 🗃️ Folder Structure (Simplified)
+
+```
+post-service/
+├── prisma/                   #Contains prisma schema and migrations
+├── src/
+│   ├── guards/               # Application Route Guards
+│   ├── prisma/               # Prisma setup (Postgres)
+│   ├── strategies/           # Authentication Strategies
+│   ├── user/                 # User Logic and Relationships
+│   ├── app.controller.ts     # Application Rest Controller
+│   ├── app.entity.ts         # Application Graphql Entity
+│   ├── app.input.ts          # Application DTOs
+│   ├── app.module.ts
+│   ├── app.resolver.ts
+│   ├── app.schema.ts
+│   ├── app.service.ts
+│   └── main.ts
+├── docker-compose.yml
+├── Dockerfile
+├── nest-cli.json
+├── package.json
+├── README.md
+└── tsconfig.json
 ```
 
-### API Documentation
+---
 
-Visit `http://localhost:3000/api` to view Swagger API documentation.
+## 🧱 Future Plans
 
-## Contributing
-
-Contributions are welcome! Feel free to open issues or submit pull requests.
+* ✅ Add SQS/Kafka for emitting events

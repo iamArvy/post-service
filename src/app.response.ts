@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Post } from './post/post.schema';
+import { Post } from './app.schema';
 
 export class PostResponse implements Post {
   @ApiProperty()

@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Post as Posts } from './post.schema';
+import { Post as Posts } from './app.schema';
 @ObjectType()
 export class Post implements Posts {
   @Field(() => String, { description: 'Author ID' })

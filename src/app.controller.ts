@@ -1,3 +1,4 @@
+import { UserService } from './user/user.service';
 import {
   Body,
   Controller,
@@ -10,22 +11,29 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { AppService } from './app.service';
-import { JwtAuthGuard } from './guards';
-import { CreatePostInput } from './post/post.inputs';
 import { ApiBearerAuth, ApiOkResponse, ApiParam } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/guards';
 import { PostResponse } from './app.response';
+import { CreatePostInput } from './app.inputs';
+import { AppService } from './app.service';
 
-@Controller('posts')
+@Controller('post')
 export class AppController {
-  constructor(private readonly service: AppService) {}
+  constructor(
+    private readonly service: AppService,
+    private readonly userService: UserService,
+  ) {}
 
   @ApiOkResponse({ description: 'The created post', type: PostResponse })
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Put('create')
-  create_post(@Req() req: { user: string }, @Body() data: CreatePostInput) {
-    const post = this.service.create_post(req.user, data);
+  async create_post(
+    @Req() req: { user: string },
+    @Body() data: CreatePostInput,
+  ) {
+    const user = await this.userService.user(req.user);
+    const post = this.service.create(user, data);
     return post;
   }
 
@@ -38,15 +46,15 @@ export class AppController {
   })
   @UseGuards(JwtAuthGuard)
   @Put(':id/comment')
-  create_comment(
+  async create_comment(
     @Req() req: { user: string },
-    @Param('id') id: string,
+    @Param('id') pid: string,
     @Body() data: CreatePostInput,
   ) {
-    const post = this.service.create_child(req.user, id, data);
+    const user = await this.userService.user(req.user);
+    const post = await this.service.comment(user, data, pid);
     return post;
   }
-
   @ApiOkResponse({ description: 'True or False response', type: Boolean })
   @ApiParam({
     name: 'id',
@@ -83,7 +91,7 @@ export class AppController {
   })
   @Get(':id')
   get_post(@Param('id') id: string) {
-    return this.service.get_post(id);
+    return this.service.get(id);
   }
 
   @ApiOkResponse({
@@ -111,7 +119,7 @@ export class AppController {
   })
   @Get(':id/comments')
   async get_post_children(@Param('id') id: string) {
-    return await this.service.get_children(id);
+    return await this.service.get_post_comments(id);
   }
 
   @ApiOkResponse({ description: 'The updated post', type: PostResponse })
@@ -128,7 +136,10 @@ export class AppController {
     @Param('id') id: string,
     @Body() data: CreatePostInput,
   ) {
-    return await this.service.update_post(req.user, id, data);
+    const post = await this.service.get_user_post(req.user, id);
+    await post.updateOne(data);
+    await post.save();
+    return post;
   }
 
   @ApiOkResponse({ description: 'The deleted post', type: PostResponse })
@@ -141,6 +152,8 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Delete(':id/delete')
   async delete_post(@Req() req: { user: string }, @Param('id') id: string) {
-    return await this.service.delete_post(req.user, id);
+    const post = await this.service.get_user_post(req.user, id);
+    await post.deleteOne();
+    return post;
   }
 }
