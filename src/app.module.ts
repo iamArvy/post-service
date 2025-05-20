@@ -13,7 +13,10 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGO_DB_URL || ''),
+    MongooseModule.forRoot(
+      process.env.MONGO_DB_URL ||
+        'mongodb://root:example@localhost:27017/posts?authSource=admin',
+    ),
     MongooseModule.forFeature([{ name: Post.name, schema: PostSchema }]),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

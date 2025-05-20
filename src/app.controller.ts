@@ -14,7 +14,7 @@ import {
 import { ApiBearerAuth, ApiOkResponse, ApiParam } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/guards';
 import { PostResponse } from './app.response';
-import { CreatePostInput } from './app.inputs';
+import { CreatePostInput } from './app.input';
 import { AppService } from './app.service';
 
 @Controller('post')
